@@ -18,7 +18,7 @@ Contact tracing, temas izleme
 
 Mevcut koşullarda temas izleme, DSÖ ve sağlık kurumları tarafından manuel bir şekilde yapılıyor. Bu yüzden, ancak salgının başlangıç aşamasında uygulanabiliyor. Hastalık, binlerce insana bulaştıktan sonra, kaynak yetersizliğinden dolayı temas izlemesi yapılamıyor.
 
-Bizim projemiz, temas izlemesi yapmayı hem son derece ucuzlatıyor, hem de doğru temas bilgisine ulaşmak açısından son derece çok kaliteli bir hale getiriyor. Hemen herkesin üzerinde bulunan cep telefonlarının bluetooth sinyallerini kullanarak ve bazı akıllı istatistiksel puanlama algoritmalarıyla, bir kişiye hastalık bulaşma ihtimalini uzaktan tespit edebilir hale geleceğiz.
+Bizim projemiz, temas izlemesi yapmayı hem son derece ucuzlatıyor, hem de doğru temas bilgisine ulaşmak açısından son derece kaliteli bir hale getiriyor. Hemen herkesin üzerinde bulunan cep telefonlarının bluetooth sinyallerini kullanarak ve bazı akıllı istatistiksel puanlama algoritmalarıyla, bir kişiye hastalık bulaşma ihtimalini uzaktan tespit edebilir hale geleceğiz.
 
 ### Kullanılacak/Geliştirilecek Teknik ve Teknolojiler ile Özgün Katkıları
 
@@ -100,7 +100,9 @@ Mobil istemci, BLE (bluetooth light energy) ile diğer cihazlara dakikada bir ke
 
 Beacon Contact Log'ları sunucuya gönderilmez. Bunlar sadece kişinin kendi telefonunda saklanır. 
 
-Daha sonra, Sağlık Bakanlığı gibi resmi bir kaynaktan, belirli bir kişinin hasta olduğu bilgisi, bizim sistemimize AdminPanel arayüzü veya API üzerinden girildiğinde, bu bilgiyi Postgres veritabanına kaydedeceğiz. Sistem, hasta kişilerin mobil istemci SDK'larından bu telefonlarda tutulan kayıtları (Beacon Contact Logs) ister. 
+Daha sonra, Sağlık Bakanlığı gibi resmi bir kaynaktan, belirli bir kişinin hasta olduğu bilgisi, bizim sistemimize AdminPanel arayüzü veya API üzerinden girildiğinde, bu bilgiyi Postgres veritabanına kaydedeceğiz. Alternatif olarak, kullanıcı kendi inisiyatifyle de, telefonundaki mobil istemciyi kullanarak, "Hastalık bana bulaştı" bilgisini sisteme girebilir.
+
+Sistem, hasta kişilerin mobil istemci SDK'larından bu telefonlarda tutulan kayıtları (Beacon Contact Logs) ister. 
 
 Mobil istemci SDK'sı, bu kayıtları bir JSON dosyası olarak, backend tarafındaki EventCollector sunucusuna gönderir. Bu sunucular farklı kişilerden gelen JSON dosyalarını toplayıp, saklama alanını optimize ederek lokaline Parquet formatında kaydeder. EventCollector sunucuları, belli aralıklarla bu lokal Parquet dosyalarını, S3 gibi merkezi bir depolama servisine kaydederler.
 
@@ -108,9 +110,9 @@ Bu arada, EventCollector'larla asenkron bir şekilde çalışan Spark tabanlı b
 
 Bu yukarıdaki proseslerle asenkron bir şekilde, tüm mobil istemci SDK'ları, saatte bir, backend sunucusundan, S3'teki kendi ziyaret ettiği mekanlara (coarse location) ait, Parquet dosyalarını çeker. Her bir mobil istemci, kendi kimliğini (id), bu kayıtlarda arar. 
 
-Daha sonra, mobil istemci, parquet dosyasında kendisiyle eşleşen hasta temaslarının skorlamasını yapar. Bu skorlamadan amaç, örneğin çok kısa süreli veya çok uzaktan gerçekleşen temasları elemek, gerçekten bulaşma riski oluşturan temas örneklerini ayıklamaktır.
+Daha sonra, mobil istemci, parquet dosyasında kendisiyle eşleşen hasta temaslarının skorlamasını yapar. Bu skorlamadan amaç, örneğin çok kısa süreli veya çok uzaktan gerçekleşen temasları elemek, gerçekten bulaşma riski oluşturan temas örneklerini ayırmaktır.
 
-Bu skor hesaplamasının sonunda, bir kişiye hastalık bulaşma ihtimali ortaya çıkar. Eğer kullanıcının riski eşik değerin üstündeyse, kullanıcıya uyarı bilgisi gönderilir. Kullanıcıya mobil istemci SDK'sını kullanarak, ekstra sorular sorarız. Bu sorular, CDC'nin ve Apple'ın hastalık tanısı amacıyla kullandığı semptom sorularıdır (https://www.cdc.gov/coronavirus/2019-ncov/downloads/pui-form.pdf).
+Bu skor hesaplamasının sonunda, bir kişiye hastalık bulaşma ihtimali ortaya çıkar. Eğer kullanıcının riski eşik değerin üstündeyse, kullanıcıya uyarı bilgisi gönderilir. Kullanıcıya mobil istemci SDK'sını kullanarak, ekstra sorular sorarız. Bu sorular, CDC'nin ve Apple'ın hastalık tanısı amacıyla kullandığı semptom sorularıdır (https://www.cdc.gov/coronavirus/2019-ncov/downloads/pui-form.pdf). Bu formlardaki soruların tümüne ihtiyacımız yok. Sadece semptomlarla ilgili bilgileri sormamız yeterli.
 
 Semptom bilgilerini, hastalık şüphesi taşıyan kullanıcılara her gün sorarak backend tarafındaki Postgres veritabanına kaydederiz. Buna göre her gün yeniden skor hesaplarız. Belli bir eşik değeri geçerse, bir sonraki aksiyona geçeriz: 
 
@@ -167,6 +169,8 @@ Projenin hedef kitleleri şunlardır:
 - Tüm akıllı telefon kullanıcısı vatandaşlar: Temas verilerini toplayacağımız son kullanıcılar bunlar.
 - Sağlık Bakanlığı görevlileri: Bu kullanıcılardan, hasta olan kişilerin kimler olduğu bilgisini alacağız.
 
+Neden tüm vatandaşları hedefliyoruz? Çünkü korona virüsü gibi hastalıklar, yaş, cinsiyet gibi hiçbir ayrım gözetmeden, herkese eşit derecede bulaşma ihtimaline sahip. Gündelik hayatta, temas ettiğimiz, yanından geçtiğimiz, aynı havayı soluduğumuz, aynı ortamda bulunduğumuz küçük büyük herkesle virüs alışverişi yapabiliriz. Bu yüzden, hedef kitle olarak bir sınırlama yapmak doğru olmayacaktır.
+
 ### Yöntem 10000
 
 Sistem şu modüllerden oluşacak:
@@ -174,6 +178,13 @@ Sistem şu modüllerden oluşacak:
 - Mobil istemci SDK (Akıllı telefonda)
 - EventCollector Workers (Backend sunucularda)
 - Spark Batch Processes (Backend sunucularda)
+- Admin Panel
+
+Admin Panel sistemin yönetici kullanıcılarının ve Sağlık Bakanlığı kullanıcılarının erişim arayüzüdür.
+
+Sağlık Bakanlığı görevlileri, bu arayüzü kullanarak hasta kişilerin kimler olduğu bilgisini tek tek veya bir dosya olarak yükleyebilecek.
+
+Admin Panel, arka tarafta veritabanı olarak Postgres gibi ilişkisel bir veritabanı kullanacak.
 
 Sistemi geliştirirken aşağıdaki fonksiyonel olmayan gereksinimler dikkate alınacak:
 
@@ -191,7 +202,35 @@ NFR004: Telefonun lokasyon, bluetooth servislerini kullanma izini alınacak.
 
 SDK'nın gömüldüğü host uygulamanın bu izinleri kullanıcıdan alması gerekiyor. Partner firmaların  uygulamaları, bu izinleri zaten kendi işleyişleri için muhtemelen almış olacaktır. 
 
-NFR005: Partner uygulamalar sadece bir maven configuration dosyasında ayar yaparak entegre olacak.
+NFR005: Partner firmaların host uygulamaları sadece bir konfigürasyon ayarlamasıyla sisteme entegre olabilmeli.
+
+NFR006: Aslında aynı ortamda bulunulmadığı halde, telefonların birbirine beacon mesajı gönderebildiği özel durumlar elenebilmeli.
+
+Örneğin, bir kişi balkonda sigara içiyorken, komşusunun telefonuyla bluetooth sinyali alışverişi yapabilir. Başka bir örnek, özel arabasında giden bir kişi, yanından geçen arabalardaki telefonlarla mesaj alışverişi yapabilir. Bu gibi durumların tespit edilmesi ve elenmesi lazım.
+
+Bu gibi yalancı temasların tespit edilmesi için çeşitli çözüm yöntemleri bulunuyor. Örneğin, telefondaki accelerometer sensöründen gelen verileri kullanarak, kullanıcının bir arabada mı bulunduğunu, yoksa yürümekte mi olduğunu tespit edebiliriz. Accelerometer sensörüne erişim, ek izin gerektirmiyor. 
+
+Ancak burada birbiriyle aynı özel aracı veya servis aracı gibi aracı paylaşan insanları, tesadüfen yanyana geçen arabalardaki insanlardan ayırmak lazım. Bunun için, temas süresini de dikkate almalıyız.
+
+NFR007: Sistem, hem nefes yoluyla, hem de ortak bir eşyaya dokunma yoluyla meydana gelen virüs bulaşma durumlarını dikkate almalı.
+
+Nefes yoluyla virüs bulaşmasıyla, bir eşyaya elle dokunma üzerinden virüs bulaşması arasında, temas takibi açısından çok kritik bir farklılık bulunur. Nefes yoluyla virüs bulaşması için, iki kişinin aynı anda aynı ortamda bulunması gerekir. Ancak eşyalara dokunma üzerinden virüs bulaşmasında, iki kişinin aynı anda bir ortamda bulunması gerekmez. 
+
+Örneğin, bir kişi on dakika önce, otobüsteki bir direğe tutunmuştur. Bu kişi, durakta otobüsten inmiştir. Otobüse yeni binen kişi, bu kişiyle hiçbir zaman aynı ortamda bulunmadığı halde, o kişiden sonra otobüse binmesi durumunda, hastalık kapma riskine sahiptir. 
+
+Bu gibi durumları tespit edebilmek için, hastalıklı kişilerle, potansiyel kişilerin temaslarını araştırırken, sadece aynı anda aynı ortamda bulunmasını kontrol etmeyeceğiz. Hastalıklı kişinin bulunduğu kapalı mekanlarda ve kullandığı toplu ulaşım araçlarında, belli bir süre içinde bulunan insanları da tespit edeceğiz.
+
+Bu gereksinimi gerçekleştirebilmemiz için, insanların bulunduğu mekanların, ortak kullanılan bir kapalı alan (toplu ulaşım aracı, devlet dairesi, market/cafe gibi) olup olmadığını bilmeliyiz. 
+
+Toplu ulaşım araçlarını tespit etmek için, her bir sürücünün mobil istemcisiyle özel bazı bilgileri toplayacağız: Plaka, sefer numarası bilgileri gibi. 
+
+Devlet daireleri ve market/cafe verisini toplamak için, Google Maps veya Foursquare gibi mevcut GIS veritabanlarını kullanacağız.
+
+NFR008: Parquet dosyalarını depolama servisinde kullanılacak dosya hiyerarşisi şu şekilde olacak: 
+
+Kök dizin > Worker Id > Gün tabanlı tarih dizinleri > Parquet dosyaları
+
+Bu dosya yapısı, Hadoop ekosistemine dahil Spark gibi uygulamaların standartlarına uygun dosya yapısıdır. Böylece, Spark'a sadece kök dizini tanımlamamız, Spark'ın tarih bazlı filtreleme gibi dahili işlevlerini doğrudan kullanmamıza izin verecek.
 
 ## B2. Projenin Teknoloji Düzeyi
 
