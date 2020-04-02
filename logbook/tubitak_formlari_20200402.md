@@ -28,23 +28,77 @@ Corona salgınından dolayı milyonlarca insan çalışamıyor. Temas izleme oto
 
 ### Proje Görseli (5 Resim)
 
+CoronaBuster_Architecture-AdminPanel.png
+CoronaBuster_Architecture-Batch Processes.png
+CoronaBuster_Architecture-EventCollectors.png
+
 ### Sunum Materyali (Powerpoint)
 
 # B. Projenin Endüstriyel Arge İçeriği, Teknoloji Düzeyi ve Yenilikçi Yönü
 
-## B1. Projenin Çağrı Konusuyla İLişkisi ve Hedefleri
+## B1. Projenin Çağrı Konusuyla İlişkisi ve Hedefleri
 
 ### Projenin Çağrı Konusu ile İlişkisi 10000
 
-@Mert
+CoronaBuster projesi, çağrı metninde belirtilen şartları şu gerekçelerle sağlamaktadır:
+
+1. Korona virüs salgınının yayılma hızını doğrudan azaltmayı kolaylaştıracaktır, çünkü: 
+
+a) Hasta kişiyle yoğun bir şekilde temas etmiş, potansiyel hastaları hızlı bir şekilde tespit etmeyi sağlayacak.
+
+b) Hastalığın en çok yayıldığı ortamları tespit etmeyi sağlayacak.
+
+Bu gerekçelerle, CoronaBuster projesi, salgının doğrudan veya dolaylı sonuçlarına etki edebilecek bir bilişim uygulamasıdır.
+
+2. Burada toplanan veriler ve yapılan analizlerle, dolaylı olarak başka halk sağlığı ve epidemiyolojik araştırmalar için veri kümesi oluşturacaktır:
+
+a) Hastalığı kesinleşmiş bir kişinin, hastalığı kimden aldığını tahminlemeyi mümkün hale getirecek. Bu da süper yayıcıların (super spreaders) tespit edilmesini ve bu kişilerin ortak davranış özelliklerini çıkarmayı kolaylaştıracaktır.
+
+b) Hastalığın bulaşmasına dair etkileşim dinamiklerini görselleştirmeyi mümkün hale getirecek. Bu da idarecilerin politika oluşturmasına yardımcı olacaktır.
+
+3. Sağlık Bakanlığının ve mülki idarenin hastalıkla önleyici mücadele yapmasını kolaylaştıracak, çünkü:
+
+a) Spesifik olarak potansiyel hasta kişilerin tespit edilmesi sayesinde, sadece bu kişileri tecrit edilmesiyle, hastalığın yayılması yavaşlatılabilecek. Böylece, ekonominin ve tedarik zincirlerinin bir bütün olarak durdurulması gerekmeyecek. Tedarik zincirlerindeki öngörülemeyen aksamalardan dolayı, sağlık, gıda gibi kritik ikmal hatlarında bir aksaklık yaşanması durumu önlenmiş olacak.
 
 ### Problem Tanımı 10000
 
-@Mert
+Mevcut izolasyon ve sosyal mesafe uygulamaları, korona hastalığının yayılmasını belirli ölçüde yavaşlatmış olmakla birlikte, hastalanmış popülasyon yine de her 2-3 günde bir, katlanarak büyümeye devam etmektedir. 
+
+Sokağa çıkma yasağı getirilmesi durumunda, hasta popülasyonunun üstel bir şekilde azalması beklenmektedir. Ancak hastalık tamamen yok olmayacağından, yasak kaldırıldığında, hastalığın tekrar hızla yayılması ihtimali söz konusudur. Imperial College Profesörü Neil Ferguson'ın yaptığı simülasyonlara göre, salgının sönümlenmesi 18 ayı bulacaktır (bkz: "Impact of non-pharmaceutical interventions (NPIs) to reduce COVID- 19 mortality and healthcare demand" https://t.co/srbBS7F1s5). 18 ay boyunca sokağa çıkma yasağı veya #EvdeKal kampanyası uygulanamayacağına göre, bir yerden sonra, hastalığın yayılması önündeki izolasyondan kaynaklı yavaşlama tamamen ortadan kalkacaktır.
+
+Eğer hastalığı kesinleşmiş bir kişinin, yoğun temas içinde bulunduğu kişilerin tümünü otomatik ve mevcut KVKK hukukuna uygun bir yolunu bulursak, toplumun sadece çok ufak bir kısmını tecrit altına almak yoluyla, salgının kontrol alınması mümkündür. Odaklanmamız gereken hedef, hasta olsun olmasın herkesi tecrit etmek değil, sadece kesinleşmiş hastaları ve bunların temasta bulunduğu muhtemel hastaları tecrit etmek olmalı. Böylece, ekonomi aksamadan yürüyebilir ve hastalık çok yüksek bir maliyet etkin bir şekilde kontrol altına alınıp, tamamen sönümlendirilebilir.
+
+Bizim önerdiğimiz proje, temas izlemesi yapmayı hem son derece düşük maliyetli ve otomatik bir hale getiriyor, hem de bunu yaparken insanların kişisel mahremiyet haklarını koruyor. Bunun için önerdiğimiz çözüm, cep telefonlarının bluetooth sinyallerini kullanmaya dayanıyor. 
 
 ### Çözüm Önerisi 10000
 
-@Mert 
+Şu an, neredeyse herkesin üzerinde bluetooth destekli bir akıllı telefon bulunuyor. Telefonların yaydığı bluetooth sinyalinin yaklaşık 10 metrelik bir menzili bulunuyor. Telefonlara yükleyeceğimiz bir yazılım modülüyle, her bir kişinin yakın çevresindeki insanların şifrelenmiş güvenli kaydını tutacağız. Daha sonra, bir kişinin hasta olduğu bilgisi bize ulaştığında, bu kişiyle yakın temasta bulunmuş diğer insanları tespit edeceğiz ve bu insanlara uyarı mesajı göndereceğiz.
+
+Bütün bu işlemleri yaparken, hem Türkiye'nin KVKK (Kişisel Verileri Koruma Kurumu) mevzuatıyla, hem de AB'nin GDPR (General Data Protection Regulation) mevzuatıyla uyumlu bir şekilde, insanların kişisel bilgilerinin mahremiyetini koruyacak bir çözüm tasarlıyoruz. 
+
+Bilgi mahremiyetini korumak için sistem tasarımımızda şu iki kritik kısıt bulunuyor:
+
+- Temasların tespit edilmesi için gerekli olan minimum seviyede bilgi sunucu tarafına gönderilecek.
+- Telefonların birbirlerine gönderecekleri mesajlarda (beacon mesajı), gönderen telefonun kimliğini ortaya çıkaracak veri bulunmayacak.
+
+Yazılım sisteminin çalışması temel olarak, iki ana modülden oluşur:
+
+- Mobil istemci SDK (Akıllı telefonda)
+- EventCollector Workers (Backend sunucularda)
+- Spark Batch Processes (Backend sunucularda)
+
+Mobil istemciyi, bir SDK modülü olarak dağıtacağız, esas olarak. Bu SDK, hali hazırda insanların yaygın bir şekilde kullandığı, teslimat (getir, banabi, yemeksepeti gibi), bankacılık (İşBankası, Enpara gibi) gibi uygulamaların (host uygulama) içine gömülecek.
+
+Mobil istemciyi hazırladıktan sonra, popüler uygulama üreticileriyle bağlantıya geçeceğiz. Bunların arasından hızlı bir şekilde öncü partner olmak isteyen partnerleri seçeceğiz. İlk etapta, SDK'yı bu partnerlerin uygulamalarına ekleyeceğiz. Uygulama canlı ortamda bir süre test edildikten sonra, geniş yayılım için, yeni partnerlerle bağlantı kurup uygulamanın yayılımını olabildiğince artırmaya çalışacağız.
+
+Mobil istemci, BLE (bluetooth light energy) ile diğer cihazlara dakikada bir kendisini tanıtan bir mesaj (Beacon mesajı) yollayacak. Bu mesajı bluetooth üzerinden alan etraftaki telefonlarda bulunan mobil istemciler, bu temas verisini telefonun hafızasına kaydedecek. Bu kayıt (Beacon Contact Log) şu verilerden oluşacak:
+
+- Timestamp (zaman damgası)
+- Gönderen telefonun tekil kimliği (id)
+- RSS (receiver signal strength): Gönderen telefonun yaklaşık mesafesini tespit etmek için.
+- Coarse location: Yaklaşık 1-2 km hassasiyetinde (değişebilir) konum verisi. 
+
+Normal koşullarda, 
 
 ### Proje Hedefleri 10000
 
