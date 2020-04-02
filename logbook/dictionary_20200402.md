@@ -30,3 +30,10 @@ Timestamp: Zaman damgası
 
 Timestamp_hour: Saat çözünürlüğünde zaman damgası
 
+---
+
+NFR: Non-functional requirement. Fonksiyonel olmayan gereksinim, güvenlik, kullanışlılık gibi gereksinimler.
+
+Ev sahibi uygulama: Host application. Mobil istemci SDK'sını içine gömeceğimiz, partner firmaların uygulamaları. Örneğin: yemeksepeti, getir, banabi, Enpara.
+
+
