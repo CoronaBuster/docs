@@ -98,7 +98,17 @@ Mobil istemci, BLE (bluetooth light energy) ile diğer cihazlara dakikada bir ke
 - RSS (receiver signal strength): Gönderen telefonun yaklaşık mesafesini tespit etmek için.
 - Coarse location: Yaklaşık 1-2 km hassasiyetinde (değişebilir) konum verisi. 
 
-Normal koşullarda, 
+Beacon Contact Log'ları sunucuya gönderilmez. Bunlar sadece kişinin kendi telefonunda saklanır. 
+
+Daha sonra, Sağlık Bakanlığı gibi resmi bir kaynaktan, belirli bir kişinin hasta olduğu bilgisi, bizim sistemimize AdminPanel arayüzü veya API üzerinden girildiğinde, bu bilgiyi Postgres veritabanına kaydedeceğiz. Sistem, hasta kişilerin mobil istemci SDK'larından bu telefonlarda tutulan kayıtları (Beacon Contact Logs) ister. 
+
+Mobil istemci SDK'sı, bu kayıtları bir JSON dosyası olarak, backend tarafındaki EventCollector sunucusuna gönderir. Bu sunucular farklı kişilerden gelen JSON dosyalarını toplayıp, saklama alanını optimize ederek lokaline Parquet formatında kaydeder. EventCollector sunucuları, belli aralıklarla bu lokal Parquet dosyalarını, S3 gibi merkezi bir depolama servisine kaydederler.
+
+Bu arada, EventCollector'larla asenkron bir şekilde çalışan Spark tabanlı bir batch process, S3'teki Parquet dosyaları üzerinde veri işlemesi yapar. Bu işlem sırasında, veriyi indeksler (coarse location, timestamp, "beacon encrypted contact id" alanlarına göre).
+
+Bu yukarıdaki proseslerle asenkron bir şekilde, tüm mobil istemci SDK'ları, saatte bir, backend sunucusundan, S3'teki kendi ziyaret ettiği mekanlara (coarse location) ait, Parquet dosyalarını çeker. Her bir mobil istemci, kendi kimliğini (id), bu kayıtlarda arar. 
+
+Daha sonra, mobil istemci, parquet dosyasında kendisiyle eşleşen hasta temaslarının skorlamasını yapar. Bu skorlamadan amaç, örneğin çok kısa süreli veya çok uzaktan gerçekleşen temasları elemek, gerçekten bulaşma riski oluşturan temas örneklerini ayıklamaktır.
 
 ### Proje Hedefleri 10000
 
