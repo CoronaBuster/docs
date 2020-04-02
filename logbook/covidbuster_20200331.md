@@ -425,7 +425,7 @@ Kullanıcı diyelim ki, kendisini buldu. Ne yapacak?
 
 Bize bir notification gönderiyor. Ben şu saatte, bu bluetooth id bana aitti. API'dan bunu alıyoruz. Bunların toplamını alıyoruz. Şu saat, bu saat, bu saat. Tüm listeyi alıyoruz. Hangi saatte kaç dakika virüslü biriyle kontaktta bulundu? Azıcık bir dakikalık temas olabilir. Bu durumda, iki hafta kendini kapat demeyeceğiz. Belli bir eşiği geçenleri kapatacağız.
 
-Bu listeyi alıp, puanlama algoritmasını, kullanıcının lokalinde çalıştırabiliriz. Veya sunucuda yapabiliriz.
+Bu listeyi alıp, skorlama algoritmasını, kullanıcının lokalinde çalıştırabiliriz. Veya sunucuda yapabiliriz.
 
 Kullanıcıya ekstra sorular soruyoruz. Semptom soruları. CDC'nin soruları.
 
@@ -445,3 +445,5 @@ Q: Turkcell id veriyor.
 Bizim app için, tüm kullanıcıları tekil tanımlayacak id olacak. O id'nin kime ait olduğu. Turkcell'i kullanırsak, private device id.
 
 gdrive'daki sözlüğe ekleyelim bu terimleri.
+
+Q: Hasta kişinin kimlik bilgisiyle telefon numarasını nasıl eşleştiriyorduk? Hasta birine mesaj gönderip, onun loglarını almamız için gerekiyordu bu.

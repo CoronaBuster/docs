@@ -110,6 +110,37 @@ Bu yukarıdaki proseslerle asenkron bir şekilde, tüm mobil istemci SDK'ları, 
 
 Daha sonra, mobil istemci, parquet dosyasında kendisiyle eşleşen hasta temaslarının skorlamasını yapar. Bu skorlamadan amaç, örneğin çok kısa süreli veya çok uzaktan gerçekleşen temasları elemek, gerçekten bulaşma riski oluşturan temas örneklerini ayıklamaktır.
 
+Bu skor hesaplamasının sonunda, bir kişiye hastalık bulaşma ihtimali ortaya çıkar. Eğer kullanıcının riski eşik değerin üstündeyse, kullanıcıya uyarı bilgisi gönderilir. Kullanıcıya mobil istemci SDK'sını kullanarak, ekstra sorular sorarız. Bu sorular, CDC'nin ve Apple'ın hastalık tanısı amacıyla kullandığı semptom sorularıdır (https://www.cdc.gov/coronavirus/2019-ncov/downloads/pui-form.pdf).
+
+Semptom bilgilerini, hastalık şüphesi taşıyan kullanıcılara her gün sorarak backend tarafındaki Postgres veritabanına kaydederiz. Buna göre her gün yeniden skor hesaplarız. Belli bir eşik değeri geçerse, bir sonraki aksiyona geçeriz: 
+
+- Şüpheli hasta bilgisini Sağlık Bakanlığına bildirmek
+- Kullanıcıyı hastaneye gitmesi için uyarmak
+
+Güvenlik Gereksinimleri:
+
+Bütün bu işlemleri yaparken, hem KVKK hem GDPR mevzuatıyla uyumlu bir şekilde, insanların kişisel bilgilerinin mahremiyetini koruyacağız. Bunun için şu iki kritik kısıta göre sistemi dizayn ediyoruz:
+
+- Temasların tespit edilmesi için gerekli olan minimum seviyede bilgi sunucu tarafına gönderilecek.
+- Telefonların birbirlerine gönderecekleri mesajlarda (beacon mesajı), gönderen telefonun kimliğini ortaya çıkaracak veri bulunmayacak.
+
+Beacon mesajlarında, gönderici telefonun kimliği, saatte bir değişen bir şifrelemeyle kodlanacak. Aslında her bir telefon için iki tür id kullanacağız:
+
+- Private device id
+- Beacon encrypted contact id 
+
+Private device id, her bir telefonu tanımlayan sabit kimlik. Bu kimlik verisini, her bir telefon sadece kendisi bilecek. Biz sunucu tarafında bile, bu kimliğin hangi telefona veya kişiye ait olduğunu saklamayacağız. 
+
+Mobil istemci SDK'sı ilk çalıştığında, Turkcell gibi mobil operatörlerin sunduğu Mobile Connect servisindan, kendi telefon numarası için tekil bir private device id talep edecek. Biz sunucu tarafında, bu private device id verisini saklayacağız. Dolayısıyla, bunun ait olduğu telefon numarasını kendi veritabanımızda bulunmayacak. Bu kimliğin ait olduğu telefon numarası bilgisi sadece, mobil operatörün Mobile Connect servisinde tutulacak. Ancak Mobile Connect de, kimin hasta olduğu bilgisine sahip olmadığından, kullanıcıların kişisel bilgileri, biz de dahil tüm paydaşlardan saklanmış olacak.
+
+Beacon encrypted contact id, mobil istemcilerin birbirlerine gönderdikleri beacon mesajlarına konulacak. Bu kimlik, saat başı değişen bir kimlik olacak. Bunun için saat başı, KDF (key derivation function) kullanarak, aşağıdaki verileri girdi olarak alarak, şifrelenmiş kimlik verisi üretilecek:
+
+- Private device id
+- Coarse timestamp (significant birim olarak saat alınacak)
+- Rastgele bir salt string
+
+Böylece, dışarıdan birisinin etrafta dolaşan beacon mesajlarını takip ederek, bir telefonu takip etmesi imkansız hale gelecek; çünkü saat başı her bir telefonun gönderdiği beacon mesajındaki kendi kimliği değişecek.
+
 ### Proje Hedefleri 10000
 
 @Mert
