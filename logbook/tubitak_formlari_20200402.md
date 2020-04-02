@@ -66,7 +66,7 @@ Mevcut izolasyon ve sosyal mesafe uygulamaları, korona hastalığının yayılm
 
 Sokağa çıkma yasağı getirilmesi durumunda, hasta popülasyonunun üstel bir şekilde azalması beklenmektedir. Ancak hastalık tamamen yok olmayacağından, yasak kaldırıldığında, hastalığın tekrar hızla yayılması ihtimali söz konusudur. Imperial College Profesörü Neil Ferguson'ın yaptığı simülasyonlara göre, salgının sönümlenmesi 18 ayı bulacaktır (bkz: "Impact of non-pharmaceutical interventions (NPIs) to reduce COVID- 19 mortality and healthcare demand" https://t.co/srbBS7F1s5). 18 ay boyunca sokağa çıkma yasağı veya #EvdeKal kampanyası uygulanamayacağına göre, bir yerden sonra, hastalığın yayılması önündeki izolasyondan kaynaklı yavaşlama tamamen ortadan kalkacaktır.
 
-Eğer hastalığı kesinleşmiş bir kişinin, yoğun temas içinde bulunduğu kişilerin tümünü otomatik ve mevcut KVKK hukukuna uygun bir yolunu bulursak, toplumun sadece çok ufak bir kısmını tecrit altına almak yoluyla, salgının kontrol alınması mümkündür. Odaklanmamız gereken hedef, hasta olsun olmasın herkesi tecrit etmek değil, sadece kesinleşmiş hastaları ve bunların temasta bulunduğu muhtemel hastaları tecrit etmek olmalı. Böylece, ekonomi aksamadan yürüyebilir ve hastalık çok yüksek bir maliyet etkin bir şekilde kontrol altına alınıp, tamamen sönümlendirilebilir.
+Eğer hastalığı kesinleşmiş bir kişinin, yoğun temas içinde bulunduğu kişilerin tümünü otomatik ve mevcut KVKK hukukuna uygun bir yolunu bulursak, toplumun sadece çok ufak bir kısmını tecrit altına almak yoluyla, salgının kontrol alınması mümkündür. Odaklanmamız gereken hedef, hasta olsun olmasın herkesi tecrit etmek değil, sadece kesinleşmiş hastaları ve bunların temasta bulunduğu muhtemel hastaları tecrit etmek olmalı. Böylece, ekonomi aksamadan yürüyebilir ve hastalık çok yüksek maliyet-etkinliğe sahip tedbirlerle kontrol altına alınıp, tamamen sönümlendirilebilir.
 
 Bizim önerdiğimiz proje, temas izlemesi yapmayı hem son derece düşük maliyetli ve otomatik bir hale getiriyor, hem de bunu yaparken insanların kişisel mahremiyet haklarını koruyor. Bunun için önerdiğimiz çözüm, cep telefonlarının bluetooth sinyallerini kullanmaya dayanıyor. 
 
@@ -81,7 +81,7 @@ Bilgi mahremiyetini korumak için sistem tasarımımızda şu iki kritik kısıt
 - Temasların tespit edilmesi için gerekli olan minimum seviyede bilgi sunucu tarafına gönderilecek.
 - Telefonların birbirlerine gönderecekleri mesajlarda (beacon mesajı), gönderen telefonun kimliğini ortaya çıkaracak veri bulunmayacak.
 
-Yazılım sisteminin çalışması temel olarak, iki ana modülden oluşur:
+Yazılım sisteminin çalışması temel olarak, üç ana modülden oluşur:
 
 - Mobil istemci SDK (Akıllı telefonda)
 - EventCollector Workers (Backend sunucularda)
@@ -143,15 +143,55 @@ Böylece, dışarıdan birisinin etrafta dolaşan beacon mesajlarını takip ede
 
 ### Proje Hedefleri 10000
 
-@Mert
+Projenin 4 temel hedefi bulunur:
+
+- Türkiye toplumunun en az %90'ının temas verilerini sürekli olarak toplayabilmek
+- Tüm dünyada yaygın kullanılan bir sistem haline gelmek
+- Bundan sonraki olası salgınlarda, daha salgının başlangıç aşamasında önleyici olmak
+- Açık kaynak bir proje organizasyonu haline gelmek
+
+Projenin ilk hedefi, toplumun en az %90'ının temas verilerini toplayabilmek. Bunun için, insanların akıllı telefonlarında yaygın kullanılan tüm popüler uygulama üreticileriyle bağlantıya geçeceğiz. 
+
+İlk etapta, hızlı bir şekilde entegre olacağımız, hızlı hareket etmeye hazır olan öncü partner firmaları seçeceğiz. Türkiye'de yaygın kullanılan ve CEO'larına hızlıca ulaşabileceğimiz, adaptasyon hızları yüksek tespit ettiğimiz şu firmalarla görüşeceğiz: N11, Bisu, Bitaksi, Trendyol, Bankaların appleri, Getir, Yemek sepeti, Blutv, iste gelsin, Turkcellin appleri paycell bip yaani, Hepsiburada, Passo, Maçkolik, İbb cep trafik, Karnaval, Arabam, Sahibinden, Martı, BeinConnect (Digiturk), Gittigidiyor, Hopi.
+
+SDK'yı bu partnerlerin uygulamalarına ekleyeceğiz. Uygulama canlı ortamda bir süre test edildikten sonra, geniş yayılım için, yeni partnerlerle bağlantı kurup uygulamanın yayılımını olabildiğince artırmaya çalışacağız.
+
+İlk canlı testleri yaptıktan sonra, sistemin tüm dünyada yaygınlaşması için, yabancı partnerlerle de iletişime geçmeye başlayacağız.
+
+Geliştireceğimiz sistemin en geniş kullanıcı erişimine ulaşması için, açık kaynak bir lisansla kodlarını paylaşmayı planlıyoruz. Böylece, hem Türkiye'de, hem dünyada hızlı bir şekilde yaygınlaşması kolaylaşacaktır. Bu aynı zamanda, hem partner firmalara, hem de son kullanıcılara güven verecektir; çünkü sistemin mobil istemcisinden, backend sunucularına kadar tümünün kaynak kodlarının herkesin denetiminden geçmesi mümkün olacak. İsteyen kişi veya kuruluşlar, bizden bağımsız olarak da sistemin kurulumunu yapabilir. Bu da sistemin yaygınlaşmasını hızlandıracak bir başka faktör olacaktır.
 
 ### Hedef Kitle 10000
 
-@Mert
+Projenin hedef kitleleri şunlardır:
+
+- Tüm akıllı telefon kullanıcısı vatandaşlar: Temas verilerini toplayacağımız son kullanıcılar bunlar.
+- Sağlık Bakanlığı görevlileri: Bu kullanıcılardan, hasta olan kişilerin kimler olduğu bilgisini alacağız.
 
 ### Yöntem 10000
 
-@Mert
+Sistem şu modüllerden oluşacak:
+
+- Mobil istemci SDK (Akıllı telefonda)
+- EventCollector Workers (Backend sunucularda)
+- Spark Batch Processes (Backend sunucularda)
+
+Sistemi geliştirirken aşağıdaki fonksiyonel olmayan gereksinimler dikkate alınacak:
+
+NFR001: Telefonun piline eklenecek ekstra yük, %1'i geçmeyecek.
+
+NFR002: Telefonun hafızasına günlük en fazla 5 MB veri yazılacak.
+
+NFR003: Sunucu tarafında en fazla 6 haftalık veri saklanacak. 
+
+Kişisel bilgilerin mahremiyetini korumak için, olabildiğince az veri tutmamız gerekiyor.
+
+Eski verinin üzerine kademeli (incremental) bir şekilde yeni veriyi yazacağız (overwrite).
+
+NFR004: Telefonun lokasyon, bluetooth servislerini kullanma izini alınacak.
+
+SDK'nın gömüldüğü host uygulamanın bu izinleri kullanıcıdan alması gerekiyor. Partner firmaların  uygulamaları, bu izinleri zaten kendi işleyişleri için muhtemelen almış olacaktır. 
+
+NFR005: Partner uygulamalar sadece bir maven configuration dosyasında ayar yaparak entegre olacak.
 
 ## B2. Projenin Teknoloji Düzeyi
 
@@ -184,6 +224,27 @@ Böylece, dışarıdan birisinin etrafta dolaşan beacon mesajlarını takip ede
 # C. Proje Planı ve Kuruluş Alt Yapısı
 
 ## C1. İş Planı
+
+### Batch Processes (Spark)
+
+#### Faaliyetler
+
+Veri İşleme iş paketinde, batch process olarak çalışacak Spark uygulamasının geliştirilmesine dair şu faaliyetler yapılacak:
+
+- Teknik gereksinimlerin analizi
+- Yazılım geliştirme
+- Veri modellemesi
+- Birim ve entegrasyon testleri
+
+#### Yöntemler
+
+EventCollector'larla asenkron bir şekilde çalışan Spark tabanlı bir batch process, S3'teki Parquet dosyaları üzerinde veri işlemesi yapar. Bu işlem sırasında, veriyi indeksler (coarse location, timestamp, "beacon encrypted contact id" alanlarına göre).
+
+Veriyi bu sıralamayla indekslememizin iki sebebi bulunur:
+
+1. Mobil istemcilere, sadece kendilerinin ziyaret ettikleri mekanlara ait veriyi göndermemiz gerekiyor. Bu yüzden, ilk sıralama alanımız, coarse location alanı. 
+
+2. Mobil istemciler, kendilerine gelen veri içinde, zamana göre, kendi kimliklerinin bulunup bulunmadığını arayacak.
 
 ### İş paketi faaliyetleri 3000
 
